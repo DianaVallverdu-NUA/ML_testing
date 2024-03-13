@@ -17,7 +17,10 @@ const gotResults = (error, results) => {
   }
 
   //log results
-  console.log(results);
+  const label = results[0].label;
+  fill(0);
+  textSize(64);
+  text(label, 10, height - 100);
 }
 
 /**
@@ -46,7 +49,7 @@ const imageLoaded = () => {
 function setup() {
   //create canvas
   createCanvas(650, 600);
-  background(0);
+  background(200);
 
   //load alpaca image
   alpaca = createImg("images/alpaca.jpeg", imageLoaded);
