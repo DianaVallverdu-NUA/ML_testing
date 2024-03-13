@@ -29,7 +29,6 @@ const gotResults = (error, results) => {
 
   //display results in label and probability paragraph
   if (!labelP && !probabilityP) {
-    console.log("labelP and probabilityP are empty");
     labelP = createP(label);
     probabilityP = createP(`probability: ${probability}`);
 

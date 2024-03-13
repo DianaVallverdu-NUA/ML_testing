@@ -1,7 +1,6 @@
 let capture;
 
 const setupWebcam = () => {
-  console.log('webcam setup');
   type = VIDEO;
   capture = createCapture(VIDEO);
   capture.hide();
