@@ -4,7 +4,6 @@ let input;
 const imageUpload = new Predictive(IMAGE_UPLOAD);
 
 imageUpload.setup = () => {
-  console.log('image setup');
   //create input image
   input.show();
 
@@ -13,25 +12,24 @@ imageUpload.setup = () => {
   img.hide();
 
   //load mobile net
-  // mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
+  predicting = img;
 };
 
 imageUpload.preload = () => {
-  console.log('image preload');
   input = createFileInput(handleImage);
   input.hide();
 }
 
 imageUpload.cleanup = () => {
-  console.log('image cleanup')
   input.hide();
+  labelP.html("");
+  probabilityP.html("");
 }
 
 //the image object
 let img;
 
 const handleImage = (file) => {
-  console.log('image handle')
   if (file.type === "image") {
     img = createImg(file.data, imageLoaded);
     img.hide();
@@ -44,7 +42,6 @@ const handleImage = (file) => {
  * Show image in the canvas
  */
 const imageLoaded = () => {
-  console.log('image loaded')
   background(200);
   //get width and height
   let actualWidth = width;
@@ -56,5 +53,5 @@ const imageLoaded = () => {
   image(img, 0, 0, actualWidth, actualHeight);
 
   //load results
-  // mobileNet.predict(img, gotResults);
+  mobileNet.predict(predicting, gotResults);
 };

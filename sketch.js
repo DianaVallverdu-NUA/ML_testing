@@ -14,8 +14,6 @@ const options = [
 const predictives = [webcam, imageUpload];
 let currentPredictive = predictives[previousOption];
 
-
-
 //select list
 let select;
 
@@ -32,6 +30,8 @@ function setup() {
   for (const predictive of predictives) predictive.preload();
 
   currentPredictive.setup();
+
+  mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
 }
 
 function draw() {
@@ -52,4 +52,7 @@ function draw() {
 
   //draw current predictive
   currentPredictive.draw();
+
+  //need to manually trigger prediction here because it doesn't like it when done from within class (CORS)
+  if (selection === WEBCAM) mobileNet.predict(predicting, gotResults);
 }
