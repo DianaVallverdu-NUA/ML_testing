@@ -2,12 +2,16 @@
 let img;
 
 const setupImageUpload = () => {
+  type = IMAGE;
   //create input image
   input = createFileInput(handleImage);
 
   //load alpaca image
   img = createImg("images/alpaca.jpeg", imageLoaded);
   img.hide();
+
+  //load mobile net
+  mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
 };
 
 const handleImage = (file) => {

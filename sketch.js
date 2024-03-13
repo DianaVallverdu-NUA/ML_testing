@@ -6,10 +6,11 @@ function setup() {
   createCanvas(650, 600);
   background(200);
 
-  setupImageUpload();
-
-  //load model
-  mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
+  // setupImageUpload();
+  setupWebcam();
 }
 
-function draw() {}
+function draw() {
+
+  drawWebcam();
+}
