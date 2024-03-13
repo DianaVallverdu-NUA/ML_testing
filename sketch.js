@@ -1,5 +1,5 @@
 // Initialize the Image Classifier method with MobileNet
-const classifier = ml5.imageClassifier("MobileNet", modelLoaded);
+let mobileNet;
 
 /**
  * Callback for image classifier - logs model is loaded
@@ -9,8 +9,12 @@ const modelLoaded = () => {
 };
 
 function setup() {
+  //create canvas
   createCanvas(650, 600);
   background(0);
+
+  //load model
+  mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
 }
 
 function draw() {}
