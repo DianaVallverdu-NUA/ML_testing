@@ -1,10 +1,15 @@
 //the image object
 let img;
 
+//input file
+let input;
+
 const setupImageUpload = () => {
+  console.log("image setup");
   type = IMAGE;
   //create input image
-  input = createFileInput(handleImage);
+  if (!input) input = createFileInput(handleImage);
+  else input.show();
 
   //load alpaca image
   img = createImg("images/alpaca.jpeg", imageLoaded);
@@ -22,6 +27,11 @@ const handleImage = (file) => {
     img = null;
   }
 };
+
+//cleanup function
+const cleanupImageUpload = () => {
+  input.hide();
+}
 
 /**
  * Show image in the canvas
