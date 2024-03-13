@@ -5,23 +5,24 @@ let mobileNet;
 let alpaca;
 
 /**
- * 
+ *
  * @param {*} error
- * @param {*} results 
+ * @param {*} results
  */
 const gotResults = (error, results) => {
   //check no errors
-  if(error) {
+  if (error) {
     console.error(error);
     return;
   }
 
   //log results
   const label = results[0].label;
-  fill(0);
-  textSize(64);
-  text(label, 10, height - 100);
-}
+  const probability = results[0].confidence;
+  // fill(0);
+  createP(label);
+  createP(`probability: ${probability}`);
+};
 
 /**
  * Callback for image classifier - logs model is loaded
