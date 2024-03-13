@@ -1,8 +1,11 @@
 // Initialize the Image Classifier method with MobileNet
 let mobileNet;
 
-//the image of the alpaca
-let alpaca;
+//the image object
+let img;
+
+//label and probability paragraph objects
+let labelP, probabilityP;
 
 /**
  *
@@ -20,8 +23,14 @@ const gotResults = (error, results) => {
   const label = results[0].label;
   const probability = results[0].confidence;
   // fill(0);
-  createP(label);
-  createP(`probability: ${probability}`);
+  if (!labelP && !probabilityP) {
+    console.log('labelP and probabilityP are empty');
+    labelP = createP(label);
+    probabilityP = createP(`probability: ${probability}`);
+    return;
+  }
+  labelP.html(label);
+  probabilityP.html(probability);
 };
 
 /**
@@ -29,22 +38,33 @@ const gotResults = (error, results) => {
  */
 const modelLoaded = () => {
   console.log("model is loaded");
-  mobileNet.predict(alpaca, gotResults);
 };
 
 /**
  * Show image in the canvas
  */
 const imageLoaded = () => {
+  background(200);
   //get width and height
   let actualWidth = width;
   let actualHeight = height;
-  if (alpaca.width < alpaca.height)
-    actualWidth = (alpaca.width * height) / alpaca.height;
-  else actualHeight = (alpaca.height * width) / alpaca.width;
+  if (img.width < img.height) actualWidth = (img.width * height) / img.height;
+  else actualHeight = (img.height * width) / img.width;
 
   //display
-  image(alpaca, 0, 0, actualWidth, actualHeight);
+  image(img, 0, 0, actualWidth, actualHeight);
+
+  //load results
+  mobileNet.predict(img, gotResults);
+};
+
+const handleImage = (file) => {
+  if (file.type === "image") {
+    img = createImg(file.data, imageLoaded);
+    img.hide();
+  } else {
+    img = null;
+  }
 };
 
 function setup() {
@@ -52,9 +72,12 @@ function setup() {
   createCanvas(650, 600);
   background(200);
 
+  //create input image
+  input = createFileInput(handleImage);
+
   //load alpaca image
-  alpaca = createImg("images/alpaca.jpeg", imageLoaded);
-  alpaca.hide();
+  img = createImg("images/alpaca.jpeg", imageLoaded);
+  img.hide();
 
   //load model
   mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
