@@ -1,16 +1,20 @@
 // Initialize the Image Classifier method with MobileNet
 let mobileNet;
 
+//previous option stored to compare with new selection
+let previousOption = IMAGE_UPLOAD;
+
 //possible types of predicting
-const WEBCAM = 0;
-const IMAGE_UPLOAD = 1;
 const options = [
   { number: WEBCAM, label: "webcam" },
   { number: IMAGE_UPLOAD, label: "image upload" },
 ];
 
-//previous option stored to compare with new selection
-let previousOption = WEBCAM;
+//load predictive type
+const predictives = [webcam, imageUpload];
+let currentPredictive = predictives[previousOption];
+
+
 
 //select list
 let select;
@@ -22,27 +26,30 @@ function setup() {
 
   select = createSelect();
   options.forEach((option) => select.option(option.label, option.number));
-  select.selected(options[0]);
+  select.selected(previousOption);
 
-  //initial setup to get html right
-  setupImageUpload();
-  cleanupImageUpload();
+  //preload predictives
+  for (const predictive of predictives) predictive.preload();
 
-  //setup webcam
-  setupWebcam();
+  currentPredictive.setup();
 }
 
 function draw() {
   let selection = Number(select.selected());
 
+  //if selection has changed, load new predictive
   if (selection != previousOption) {
+    //cleanup current predictive
+    currentPredictive.cleanup();
+
+    //update and setup new predictive
+    currentPredictive = predictives[selection];
+    currentPredictive.setup();
+
+    //update previous option
     previousOption = selection;
-    if (selection === WEBCAM) setupWebcam();
-    if (selection === IMAGE_UPLOAD) setupImageUpload();
-    return;
   }
 
-  if (selection === WEBCAM) {
-    drawWebcam();
-  }
+  //draw current predictive
+  currentPredictive.draw();
 }

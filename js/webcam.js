@@ -1,18 +1,18 @@
 let capture;
 
-const setupWebcam = () => {
-  type = VIDEO;
-  capture = createCapture(VIDEO);
-  capture.hide();
+const webcam = new Predictive(WEBCAM);
 
+webcam.setup = () => {
+  this.capture = createCapture(VIDEO);
+  this.capture.hide();
 
-  mobileNet = ml5.imageClassifier("MobileNet", capture, modelLoaded);
+  // mobileNet = ml5.imageClassifier("MobileNet", this.capture, modelLoaded);
 
   //trigger first prediction
-  mobileNet.predict(gotResults)
-}
+  // mobileNet.predict(gotResults);
+};
 
-const drawWebcam = () => {
+webcam.draw = () => {
   background(200);
-  image(capture, 0, 0);
-}
+  image(this.capture, 0, 0);
+};
