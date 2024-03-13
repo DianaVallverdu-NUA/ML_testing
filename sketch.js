@@ -19,9 +19,9 @@ const gotResults = (error, results) => {
     return;
   }
 
-  //log results
+  //store results
   const label = results[0].label;
-  const probability = results[0].confidence;
+  const probability = Number(results[0].confidence).toFixed(2);
   // fill(0);
   if (!labelP && !probabilityP) {
     console.log('labelP and probabilityP are empty');
