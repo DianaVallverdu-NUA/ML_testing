@@ -25,9 +25,7 @@ imageUpload.setup = function () {
 
 imageUpload.cleanup = () => {
   input.hide();
-  if(labelP)
   labelP.html("");
-if(probabilityP)
   probabilityP.html("");
 };
 
