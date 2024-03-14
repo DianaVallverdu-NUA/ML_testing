@@ -28,9 +28,6 @@ imageUpload.cleanup = () => {
   probabilityP.html("");
 };
 
-//the image object
-// let img;
-
 const handleImage = (file) => {
   if (file.type === "image") {
     imageUpload.display = createImg(file.data, imageLoaded);
