@@ -16,7 +16,6 @@ const modelLoaded = () => {
  * @param {*} results
  */
 const gotResults = (error, results) => {
-  console.log('got results called');
   //check no errors
   if (error) {
     console.error(error);

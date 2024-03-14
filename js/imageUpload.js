@@ -17,7 +17,6 @@ imageUpload.setup = function () {
   //load alpaca image
   this.display = createImg("images/alpaca.jpeg", imageLoaded);
   this.display.hide();
-  console.log(this.display);
 
   //load mobile net
   predicting = this.display;
