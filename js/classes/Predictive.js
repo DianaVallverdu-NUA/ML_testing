@@ -4,7 +4,7 @@ class Predictive {
   }
 
   type;
-  capture;
+  display;
 
   draw = () => {};
 

@@ -1,21 +1,19 @@
-let capture;
-
 const webcam = new Predictive(WEBCAM);
 
 
-webcam.setup = () => {
-  this.capture = createCapture(VIDEO);
-  this.capture.hide();
-  predicting = this.capture;
+webcam.setup = function () {
+  this.display = createCapture(VIDEO);
+  this.display.hide();
+  predicting = this.display;
 };
 
-webcam.draw = () => {
+webcam.draw = function () {
   background(200);
-  image(this.capture, 0, 0);
+  image(this.display, 0, 0);
 };
 
-webcam.cleanup = () => {
-  this.capture.remove();
+webcam.cleanup = function () {
+  this.display.remove();
   labelP.html("");
   probabilityP.html("");
 }

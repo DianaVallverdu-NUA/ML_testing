@@ -1,40 +1,45 @@
 //input file
 let input;
 
-const imageUpload = new Predictive(IMAGE_UPLOAD);
+let imageUpload = new Predictive(IMAGE_UPLOAD);
 
-imageUpload.setup = () => {
+//on prload, create file input and hide it
+imageUpload.preload = function () {
+  input = createFileInput(handleImage);
+  input.hide();
+};
+
+//on setup show input and display demo image
+imageUpload.setup = function () {
   //create input image
   input.show();
 
   //load alpaca image
-  img = createImg("images/alpaca.jpeg", imageLoaded);
-  img.hide();
+  this.display = createImg("images/alpaca.jpeg", imageLoaded);
+  this.display.hide();
+  console.log(this.display);
 
   //load mobile net
-  predicting = img;
+  predicting = this.display;
 };
-
-imageUpload.preload = () => {
-  input = createFileInput(handleImage);
-  input.hide();
-}
 
 imageUpload.cleanup = () => {
   input.hide();
+  if(labelP)
   labelP.html("");
+if(probabilityP)
   probabilityP.html("");
-}
+};
 
 //the image object
-let img;
+// let img;
 
 const handleImage = (file) => {
   if (file.type === "image") {
-    img = createImg(file.data, imageLoaded);
-    img.hide();
+    imageUpload.display = createImg(file.data, imageLoaded);
+    imageUpload.display.hide();
   } else {
-    img = null;
+    imageUpload.display = null;
   }
 };
 
@@ -42,15 +47,22 @@ const handleImage = (file) => {
  * Show image in the canvas
  */
 const imageLoaded = () => {
+  if(!imageUpload.display) {
+    return console.error("trying to display an image that is not loaded");
+  }
   background(200);
   //get width and height
   let actualWidth = width;
   let actualHeight = height;
-  if (img.width < img.height) actualWidth = (img.width * height) / img.height;
-  else actualHeight = (img.height * width) / img.width;
+  if (imageUpload.display.width < imageUpload.display.height)
+    actualWidth =
+      (imageUpload.display.width * height) / imageUpload.display.height;
+  else
+    actualHeight =
+      (imageUpload.display.height * width) / imageUpload.display.width;
 
   //display
-  image(img, 0, 0, actualWidth, actualHeight);
+  image(imageUpload.display, 0, 0, actualWidth, actualHeight);
 
   //load results
   mobileNet.predict(predicting, gotResults);
