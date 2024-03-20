@@ -1,7 +1,7 @@
 //label and probability paragraph objects
 let labelP, probabilityP;
 
-let predicting;
+// let predicting;
 
 /**
  * Callback for image classifier - logs model is loaded
@@ -40,5 +40,6 @@ const gotResults = (error, results) => {
 
   //recall if it's a video
   //TO DO: for future, if it's a video it should check it's not over but for now video means webcam
+  console.log(currentPredictive.type)
   // if (currentPredictive.type === WEBCAM) mobileNet.predict(gotResults);
 };

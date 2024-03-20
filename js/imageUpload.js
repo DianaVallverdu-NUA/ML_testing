@@ -17,9 +17,6 @@ imageUpload.setup = function () {
   //load alpaca image
   this.display = createImg("images/alpaca.jpeg", imageLoaded);
   this.display.hide();
-
-  //load mobile net
-  predicting = this.display;
 };
 
 imageUpload.cleanup = () => {
@@ -59,5 +56,5 @@ const imageLoaded = () => {
   image(imageUpload.display, 0, 0, actualWidth, actualHeight);
 
   //load results
-  mobileNet.predict(predicting, gotResults);
+  mobileNet.predict(imageUpload.display, gotResults);
 };
