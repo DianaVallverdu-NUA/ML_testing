@@ -1,59 +1,57 @@
 // Initialize the Image Classifier method with MobileNet
 let mobileNet;
+let classifier;
+let video;
+let label = "";
+let duckButton;
+let pikachuButton;
+let trainButton;
 
-//previous option stored to compare with new selection
-let previousOption = IMAGE_UPLOAD;
+const videoLoaded = () => {
+  console.log("video ready");
+};
 
-//possible types of predicting
-const options = [
-  { number: WEBCAM, label: "webcam" },
-  { number: IMAGE_UPLOAD, label: "image upload" },
-];
-
-//load predictive type
-const predictives = [webcam, imageUpload];
-let currentPredictive = predictives[previousOption];
-
-//select list
-let select;
+const whileTraining = (loss) => {
+  if (!loss) {
+    console.log("training complete");
+    classifier.classify(gotResults);
+    return;
+  } else console.log(loss);
+};
 
 function setup() {
   //create canvas
-  createCanvas(650, 600);
+  createCanvas(640, 480);
   background(200);
 
-  select = createSelect();
-  options.forEach((option) => select.option(option.label, option.number));
-  select.selected(previousOption);
+  video = createCapture(VIDEO);
+  video.hide();
 
-  //preload predictives
-  for (const predictive of predictives) predictive.preload();
+  // mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
+  mobileNet = ml5.featureExtractor("MobileNet", modelLoaded);
+  classifier = mobileNet.classification(video, videoLoaded);
 
-  currentPredictive.setup();
+  duckButton = createButton("rubber duck");
+  duckButton.mousePressed(() => {
+    classifier.addImage("rubber duck");
+  });
 
-  mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
+  pikachuButton = createButton("pikachu");
+  pikachuButton.mousePressed(() => {
+    classifier.addImage("pikachu");
+  });
+
+  trainButton = createButton("train");
+  trainButton.mousePressed(() => {
+    classifier.train(whileTraining);
+  });
 }
 
 function draw() {
-  let selection = Number(select.selected());
-
-  //if selection has changed, load new predictive
-  if (selection != previousOption) {
-    //cleanup current predictive
-    currentPredictive.cleanup();
-
-    //update and setup new predictive
-    currentPredictive = predictives[selection];
-    currentPredictive.setup();
-
-    //update previous option
-    previousOption = selection;
-
-  }
-
-  //draw current predictive
-  currentPredictive.draw();
+  background(200);
+  image(video, 0, 0, 640, 480);
+  // mobileNet.predict(video, gotResults);
 
   //need to manually trigger prediction here because it doesn't like it when done from within class (CORS)
-  if (selection === WEBCAM) mobileNet.predict(currentPredictive.display, gotResults);
+  // mobileNet.predict(display, gotResults);
 }

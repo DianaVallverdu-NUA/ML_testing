@@ -1,13 +1,12 @@
 //label and probability paragraph objects
 let labelP, probabilityP;
 
-// let predicting;
-
 /**
  * Callback for image classifier - logs model is loaded
  */
 const modelLoaded = () => {
   console.log("model is loaded");
+  // mobileNet.predict(video, gotResults);
 };
 
 /**
@@ -16,6 +15,7 @@ const modelLoaded = () => {
  * @param {*} results
  */
 const gotResults = (error, results) => {
+  // console.log(results)
   //check no errors
   if (error) {
     console.error(error);
@@ -24,22 +24,18 @@ const gotResults = (error, results) => {
 
   //store results
   const label = results[0].label;
+  console.log(label);
   const probability = Number(results[0].confidence).toFixed(2);
 
   //display results in label and probability paragraph
   if (!labelP && !probabilityP) {
     labelP = createP(label);
     probabilityP = createP(`probability: ${probability}`);
-
-    //recall if video
-    // if (currentPredictive.type === WEBCAM) mobileNet.predict(gotResults);
+    classifier.classify(gotResults);
     return;
   }
   labelP.html(label);
   probabilityP.html(`probability: ${probability}`);
 
-  //recall if it's a video
-  //TO DO: for future, if it's a video it should check it's not over but for now video means webcam
-  console.log(currentPredictive.type)
-  // if (currentPredictive.type === WEBCAM) mobileNet.predict(gotResults);
+  classifier.classify(gotResults);
 };
