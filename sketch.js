@@ -3,9 +3,12 @@ let mobileNet;
 let classifier;
 let video;
 let label = "";
-let duckButton;
-let pikachuButton;
 let trainButton;
+let input;
+let buttons = [];
+let newInputButton;
+let defaultDiv;
+let newButtonsDiv;
 
 const videoLoaded = () => {
   console.log("video ready");
@@ -27,31 +30,27 @@ function setup() {
   video = createCapture(VIDEO);
   video.hide();
 
-  // mobileNet = ml5.imageClassifier("MobileNet", modelLoaded);
   mobileNet = ml5.featureExtractor("MobileNet", modelLoaded);
   classifier = mobileNet.classification(video, videoLoaded);
-
-  duckButton = createButton("rubber duck");
-  duckButton.mousePressed(() => {
-    classifier.addImage("rubber duck");
-  });
-
-  pikachuButton = createButton("pikachu");
-  pikachuButton.mousePressed(() => {
-    classifier.addImage("pikachu");
-  });
 
   trainButton = createButton("train");
   trainButton.mousePressed(() => {
     classifier.train(whileTraining);
+  });
+
+  input = createInput();
+  newInputButton = createButton("add label");
+  newInputButton.mousePressed(() => {
+    const newLabel = input.value();
+    const newButton = createButton(newLabel);
+    newButton.mousePressed(() => {
+      classifier.addImage(newLabel);
+    });
+    buttons.push(newButton);
   });
 }
 
 function draw() {
   background(200);
   image(video, 0, 0, 640, 480);
-  // mobileNet.predict(video, gotResults);
-
-  //need to manually trigger prediction here because it doesn't like it when done from within class (CORS)
-  // mobileNet.predict(display, gotResults);
 }
