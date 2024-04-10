@@ -9,6 +9,7 @@ let buttons = [];
 let newInputButton;
 let defaultDiv;
 let newButtonsDiv;
+let savedModel;
 
 const videoLoaded = () => {
   console.log("video ready");
@@ -38,16 +39,47 @@ function setup() {
     classifier.train(whileTraining);
   });
 
-  input = createInput();
-  newInputButton = createButton("add label");
-  newInputButton.mousePressed(() => {
-    const newLabel = input.value();
-    const newButton = createButton(newLabel);
-    newButton.mousePressed(() => {
-      classifier.addImage(newLabel);
-    });
-    buttons.push(newButton);
+  const happyButton = createButton("happy");
+  happyButton.mousePressed(() => {
+    classifier.addImage("happy");
   });
+
+  const sadButton = createButton("sad");
+  sadButton.mousePressed(() => {
+    classifier.addImage("sad");
+  });
+
+  const saveButton = createButton("save");
+  saveButton.mousePressed(() => {
+    classifier.save();
+  });
+
+  createFileInput((file) => {
+    console.log(file);
+    // savedModel = data.data;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      console.log('e.target.result')
+      console.log(e.target.result); // => Hello World
+    };
+    // reader.readAsText(file.file);
+    savedModel = URL.createObjectURL(file.file);
+    console.log(savedModel)
+    console.log('instance of blob')
+    console.log(savedModel instanceof Blob)
+    console.log('type of file.file')
+    console.log(typeof file.file)
+    console.log('file type')
+    console.log(typeof file)
+  })
+  const loadButton = createButton("load data");
+  loadButton.mousePressed(() => {
+    if(!savedModel) return alert("you need to upload the model data first");
+    console.log(savedModel instanceof Blob)
+    classifier.load(savedModel);
+  })
+
 }
 
 function draw() {
